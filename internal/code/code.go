@@ -31,6 +31,7 @@ const (
 	RBACError          = 10113
 	RedisConnectError  = 10114
 	MySQLConnectError  = 10115
+	PgSQlConnectError  = 10123
 	WriteConfigError   = 10116
 	SendEmailError     = 10117
 	MySQLExecError     = 10118

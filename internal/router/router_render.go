@@ -19,7 +19,7 @@ func setRenderRouter(r *resource) {
 	renderInstall := install.New(r.logger)
 	renderIndex := index.New(r.logger, r.db, r.cache)
 	renderDashboard := dashboard.New(r.logger, r.db, r.cache)
-	renderGenerator := generator_handler.New(r.logger, r.db, r.cache)
+	renderGenerator := generator_handler.New(r.logger, r.db, r.cache, r.pgSqlDB)
 	renderConfig := config.New(r.logger, r.db, r.cache)
 	renderAuthorized := authorized.New(r.logger, r.db, r.cache)
 	renderTool := tool.New(r.logger, r.db, r.cache)
@@ -56,6 +56,10 @@ func setRenderRouter(r *resource) {
 		// 代码生成器
 		render.GET("/generator/gorm", renderGenerator.GormView())
 		render.POST("/generator/gorm/execute", renderGenerator.GormExecute())
+		
+		// pgsql代码生成器
+		render.GET("/generator/pgsql/gorm", renderGenerator.GormPgSQLView())
+		render.POST("/generator/pgsql/gorm/execute", renderGenerator.PgsqlGormExecute())
 
 		render.GET("/generator/handler", renderGenerator.HandlerView())
 		render.POST("/generator/handler/execute", renderGenerator.HandlerExecute())

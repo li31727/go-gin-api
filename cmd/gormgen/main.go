@@ -15,8 +15,9 @@ var (
 )
 
 func init() {
-	flagStructs := flag.String("structs", "", "[Required] The name of schema structs to generate structs for, comma seperated\n")
-	flagInput := flag.String("input", "", "[Required] The name of the input file dir\n")
+	flagStructs := flag.String("structs", "PlayerComplaintLog", "[Required] The name of schema structs to generate structs for, comma seperated\n")
+	flagInput := flag.String("input", "/Users/lileibiao/go/src/DEMO/go-gin/go-gin/internal/repository/pgsql/player_complaint_log", "[Required] The name of the input file dir\n")
+	//flagInput := flag.String("input", "/Users/lileibiao/go/src/DEMO/go-gin/go-gin/internal/repository/mysql/order", "[Required] The name of the input file dir\n")
 	flag.Parse()
 
 	if *flagStructs == "" || *flagInput == "" {

@@ -44,6 +44,7 @@ func main() {
 		panic(err)
 	}
 
+
 	// 初始化 cron logger
 	cronLogger, err := logger.NewJSONLogger(
 		logger.WithDisableConsole(),

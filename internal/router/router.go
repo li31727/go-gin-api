@@ -7,6 +7,7 @@ import (
 	"github.com/xinliangnote/go-gin-api/internal/pkg/core"
 	"github.com/xinliangnote/go-gin-api/internal/repository/cron"
 	"github.com/xinliangnote/go-gin-api/internal/repository/mysql"
+	pgsql "github.com/xinliangnote/go-gin-api/internal/repository/pgsql"
 	"github.com/xinliangnote/go-gin-api/internal/repository/redis"
 	"github.com/xinliangnote/go-gin-api/internal/router/interceptor"
 	"github.com/xinliangnote/go-gin-api/pkg/errors"
@@ -22,6 +23,7 @@ type resource struct {
 	cache        redis.Repo
 	interceptors interceptor.Interceptor
 	cronServer   cron.Server
+	pgSqlDB      pgsql.Repo
 }
 
 type Server struct {
@@ -29,6 +31,7 @@ type Server struct {
 	Db         mysql.Repo
 	Cache      redis.Repo
 	CronServer cron.Server
+	pgSqlDB    pgsql.Repo
 }
 
 func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) {
@@ -52,6 +55,13 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 			logger.Fatal("new db err", zap.Error(err))
 		}
 		r.db = dbRepo
+
+		//初始化pgsql
+		pgdbReop, err := pgsql.New()
+		if err != nil {
+			logger.Fatal("new db err", zap.Error(err))
+		}
+		r.pgSqlDB = pgdbReop
 
 		// 初始化 Cache
 		cacheRepo, err := redis.New()
@@ -95,6 +105,9 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 
 	// 设置 Socket 路由
 	setSocketRouter(r)
+
+	//设置  Order 路由
+	setOrderRouter(r)
 
 	s := new(Server)
 	s.Mux = mux

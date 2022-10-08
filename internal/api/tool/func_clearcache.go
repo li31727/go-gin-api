@@ -10,7 +10,6 @@ import (
 
 type clearCacheRequest struct {
 	RedisKey string `form:"redis_key"` // Redis Key
-	sdf      string
 }
 
 type clearCacheResponse struct {
